@@ -1,0 +1,197 @@
+
+<head>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<div style="background-image: url(images/test5.jpg);background-repeat: no-repeat;background-size: cover;">
+	<title>Calculator</title>
+	<style>
+
+		input
+		{
+	height: 55px;
+	font-size: 32px;
+	color: black;
+	border-radius: 5px;
+	padding: 10px;
+	border: 2px solid rgb(0,150,255);
+}
+h1
+{
+	-webkit-text-stroke:2px rgb(0,0,125);
+	font-weight: 900;
+	color: rgb(245, 242, 76);
+}
+.buttons,.operator,.equal{
+	font-size: 24px;
+	padding: 15px;
+	border-radius: 10px;
+	border: 1px solid gray;
+	cursor: pointer;
+	text-align: center;
+	margin: 15px 0 0 22px;
+	width: 55px;
+	background-color: rgb(110, 54, 240) !important ;
+	color: white;
+}
+.button,
+.buttons1
+{
+	font-size: 20px;
+	padding: 10px;
+	border-radius: 5px;
+	border:1px solid gray;
+	cursor: pointer;
+	text-align: center;
+	margin-top: 15px;
+	margin-right: 2px;
+	margin-left: 22px;
+	width: 132px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgb(123,160,244,0.4) !important;
+}
+.buttons:active,.buttons1:active,.operator:active{
+	font-weight: bold;
+	font-style: italic;
+	color: rgb(255,0,125);
+}
+.buttons:hover,.buttons1:hover,.operator:hover/*,input:hover*/
+{
+	background-color: blue !important;
+	color: white;
+	font-size: 15px !important;
+}
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row justify-content-center align-content-center" style="height: 100vh">
+			<div class="col-5 d-inline-block text-center">
+				<h1 class="text-center">My Calculator</h1>
+				<div class="d-inline-block">
+					<div>
+						<input id="my_op" type="text" id="my_operator" readonly="" class="text-center" style="width: 42px">
+						<input id="my_input" type="text" value="0" class="text-right" style="width: 250px">
+					</div>
+					<div class="row">
+						<div class=" buttons" onclick="btnPress(this);">7</div>
+						<div class=" buttons" onclick="btnPress(this);">8</div>
+						<div class=" buttons" onclick="btnPress(this);">9</div>
+						<div class=" operator" onclick="opPress(this);">+</div>
+					</div>
+					<div class="row">
+						<div class=" buttons" onclick="btnPress(this);">4</div>
+						<div class=" buttons" onclick="btnPress(this);">5</div>
+						<div class=" buttons" onclick="btnPress(this);">6</div>
+						<div class=" operator" onclick="opPress(this);">-</div>
+					</div>
+					<div class="row">
+						<div class=" buttons" onclick="btnPress(this);">1</div>
+						<div class=" buttons" onclick="btnPress(this);">2</div>
+						<div class=" buttons" onclick="btnPress(this);">3</div>
+						<div class=" operator" onclick="opPress(this);">x</div>
+					</div>
+					<div class="row">
+						<div class=" buttons" onclick="btnPress(this);">0</div>
+						<div class=" buttons" onclick="btnPress(this);">.</div>
+						<div class=" operator" onclick="opPress(this);">/</div>
+						<!-- <div class=" operator" onclick="">&divide;</div> -->
+						<div class=" equal" onclick="opEqual(this);">=</div>
+					</div>
+					<div class="row">
+						<div class="bg-light buttons1 cl" onclick="clearMe();">CLEAR </div>
+						<div class="bg-light buttons1 cla" onclick="clearMeAll();">CLEAR ALL</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+        var myCheck=true;
+        var secondOperand="";
+        var my_operator="";
+        document.querySelector(".cl").onclick=function(){
+             document.getElementById("my_input").value="0";
+             myCheck=true;
+        }
+        document.querySelector(".cla").onclick=function(){
+            myCheck=true;
+            secondOperand="";
+            my_operator="";
+            document.querySelector("#my_op").value="";
+            document.querySelector("#my_input").value="0";
+         }
+        function btnPress(t){
+            var myinput=document.getElementById("my_input");
+            if (myCheck==true) {
+                if (t.innerText=="."){
+                    var mydotloc=myinput.value.indexOf(".");
+                    if (mydotloc<0) {
+                        myinput.value=t.innerText;
+                        myCheck=false;
+                        return;
+                    }else{
+                        return;
+                    }
+                }
+                myinput.value=t.innerText;
+                myCheck=false;
+            }else{
+                if (t.innerText=="."){
+                    var mydotloc=myinput.value.indexOf(".");
+                    if (mydotloc<0) {
+                        myinput.value+=t.innerText;
+                        return;
+                    }else{
+                        return;
+                    }
+                }
+                myinput.value+=t.innerText;
+            }
+            
+        }
+        function opPress(o){
+            var myop=document.getElementById("my_op");
+            var myinput=document.getElementById("my_input");
+            myinput.value=GetOutPut(myinput.value);
+            secondOperand=myinput.value;
+            console.log(secondOperand);
+            myop.value=o.innerText;
+            my_operator=o.innerText;
+            myCheck=true;
+        }
+        function opEqual(e) {
+            var myop=document.getElementById("my_op");
+            var myinput=document.getElementById("my_input");
+            myinput.value=GetOutPut(myinput.value);
+            secondOperand=myinput.value;
+            console.log(secondOperand);
+            myop.value=e.innerText;
+            my_operator=e.innerText;
+            myCheck=true;
+            
+        }
+        function GetOutPut(myval) {
+            if (myCheck){
+                return myval;
+            }
+            if (my_operator=="+") {
+                 var mysum=parseFloat(secondOperand)+parseFloat(myval);
+                 return mysum;
+            }else if (my_operator=="-") {
+                 var mysum=parseFloat(secondOperand)-parseFloat(myval);
+                 return mysum;
+            }else if (my_operator=="x") {
+                 var mysum=parseFloat(secondOperand)*parseFloat(myval);
+                 return mysum;
+            }else if (my_operator=="/") {
+                 var mysum=parseFloat(secondOperand)/parseFloat(myval);
+                 return mysum;
+            }else{
+                return myval;
+            }
+        }
+    </script>
+</body>
+</html>
